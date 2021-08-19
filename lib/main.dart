@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,31 +56,24 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   SaveData(String a) async{
-    var directory = await getApplicationDocumentsDirectory();
-    var mypath=directory.path;
-    var file = await File('$mypath/data.txt');
-    file.writeAsString("$a");
+    var pref = await SharedPreferences.getInstance();
+    pref.setString("key1", "$a");
+
 
 
   }
  GetData() async{
-   var directory = await getApplicationDocumentsDirectory();
-   var mypath=directory.path;
-    var file = File("$mypath/data.txt");
 
-   String s= await file.readAsString();
-   return s;
-
+   var pref = await SharedPreferences.getInstance();
+  var s= pref.getString("key1")??"no";
+  return s;
 
 
 
   }
   DeleteData() async{
-    var directory = await getApplicationDocumentsDirectory();
-    var mypath=directory.path;
-    var file = await File('$mypath/data.txt');
-    file.delete();
-
+    var pref = await SharedPreferences.getInstance();
+    pref.remove("key1");
 
   }
 
